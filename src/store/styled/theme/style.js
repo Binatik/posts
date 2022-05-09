@@ -10,7 +10,7 @@ export const fontStyle = {
   `,
 
   title: `
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 
   @media (max-width: ${breakpoints.medium}px) {
     font-size: 1.1rem;

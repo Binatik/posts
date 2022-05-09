@@ -7,7 +7,7 @@ export const theme = {
     primary: "#fff",
     default: "#000",
     secondary: "#ffead8",
-    surface: "#ffffff63",
+    surface: "#00000050",
 
     backgrounds: ["#ffa569", "#e454e5"], //Если фон разный.
   },

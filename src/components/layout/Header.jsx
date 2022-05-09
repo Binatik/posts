@@ -19,8 +19,8 @@ const Header = () => {
       title: "Главная",
     },
     {
-      path: "/started",
-      title: "Стартовая страница",
+      path: "/posts",
+      title: "Посты",
     },
   ]);
 
