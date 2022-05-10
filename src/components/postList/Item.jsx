@@ -5,12 +5,12 @@ import { Avatar } from "@cmp/UI/Avatar";
 
 import { Article } from "./Article";
 
-const Item = () => {
+const Item = ({...props}) => {
   return (
     <>
       <Item.Item>
         <Avatar />
-        <Article />
+        <Article {...props} />
       </Item.Item>
     </>
   );

@@ -20,7 +20,7 @@ const Item = styled.li`
 
 const Link = styled(NavLink)`
   display: inline-block;
-  margin: 0 0 10px 0;
+  margin: 10px 0;
   font-weight: 500;
   color: ${props => props.theme.colors.primary};
   text-decoration: none;

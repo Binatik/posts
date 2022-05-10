@@ -4,16 +4,19 @@ import { Container } from "@src/store/styled/styleComponents";
 
 import { Item } from "./Item";
 
-const Post = () => {
+const PostList = ({ posts }) => {
+
   return (
     <>
       <section>
         <Container>
-          <Item />
+          {posts.map(({ id, title, body }) => (
+            <Item key={id} title={title} body={body} />
+          ))}
         </Container>
       </section>
     </>
   );
 };
 
-export { Post };
+export { PostList };
