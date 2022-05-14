@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  background: ${props => `linear-gradient(138deg, ${props.theme.colors.backgrounds[0]} 0%, ${props.theme.colors.backgrounds[1]} 100%)`};
+  background: ${props => props.theme.colors.getGradient()};
   overflow: hidden;
 `;
 

@@ -26,6 +26,7 @@ const Article = ({title, body}) => {
 
 Article.Article = styled.article`
   flex: 1 1 90%;
+  margin: 10px 0;
   color: ${props => props.theme.colors.primary};
 `;
 

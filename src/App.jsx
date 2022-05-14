@@ -1,9 +1,11 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import { Layout } from "@cmp/layout/Layout";
 import { Main } from "@pages/Main";
 import { Posts } from "@pages/Posts";
 import { ErrorPage } from "@pages/ErrorPage";
+
 import "./style.css";
 
 const App = () => {

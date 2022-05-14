@@ -14,7 +14,7 @@ Avatar.Avatar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 20px 15px 0;
+  margin: 0 20px 0 0;
   width: 70px;
   height: 70px;
   text-transform: uppercase;

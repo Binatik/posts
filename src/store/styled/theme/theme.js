@@ -10,6 +10,10 @@ export const theme = {
     surface: "#00000050",
 
     backgrounds: ["#ffa569", "#e454e5"], //Если фон разный.
+
+    getGradient() {
+      return `linear-gradient(138deg, ${this.backgrounds[0]} 0%, ${this.backgrounds[1]})`
+    } 
   },
 
   grid: {

@@ -46,6 +46,7 @@ Header.Header = styled.header`
   top: 0;
   padding: 20px 0;
   background-color: ${props => props.theme.colors.background};
+  z-index: 5;
 `;
 
 Header.Body = styled(Container)`
