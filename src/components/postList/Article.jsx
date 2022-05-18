@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const PostTitle = styled.h2`
+  cursor: text;
   margin: 0 0 10px 0;
 
   ${props => props.theme.fontStyle.title};
