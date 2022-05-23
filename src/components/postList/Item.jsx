@@ -1,99 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { useDebounce } from "@src/hooks/useDebounce";
+import { useThrottle } from '@src/hooks/useThrottle';
 
 import { Avatar } from "@cmp/UI/Avatar";
 
 import { Article } from "./Article";
 
 const Item = ({ ...props }) => {
-  const [cordinateDirection, setCordinateDirection] = useState({
-    x: null,
-    y: null,
-    direction: null,
+  const moveItemRef = useRef(null);
+
+  const pointRef = useRef(0);
+
+  const [position, setPosition] = useState({
+    pointSave: 0,
+    pointMove: 0,
+    isListener: false,
   });
 
-  const [rectPosition, setRectPosition] = useState({
-    rect: 0,
-    position: 0,
-  });
+  const mouseMoveThrottle = useThrottle(mouseMove,35);
 
-  function getDirection(currentClientX, currentClientY) {
-    const differenceX = currentClientX - cordinateDirection.x;
-    const differenceY = currentClientY - cordinateDirection.y;
+  function mouseMove(eventMove) {
+    const point = eventMove.clientX - position.pointSave;
+    console.log((pointRef.current = point));
 
-    if (Math.abs(differenceX) > Math.abs(differenceY)) {
-      const textDirection = differenceX > 0 ? "right" : "left";
-      setCordinateDirection({ ...cordinateDirection, direction: textDirection });
-    }
+    setPosition(prev => ({ ...prev, pointMove: point }));
   }
 
-  function postMouseStart(mouseEvent) {
-    const clientX = mouseEvent.clientX;
-    const clientY = mouseEvent.clientY;
-
-    const rect = mouseEvent.target.getBoundingClientRect();
-    const rectX = clientX - rect.x;
-
-    setCordinateDirection({ ...cordinateDirection, x: clientX, y: clientY });
-
-    document.body.addEventListener("mousemove", onMouseMove);
-    document.body.addEventListener("mouseup", onMouseUp);
-
-    function onMouseUp() {
-      document.body.removeEventListener("mousemove", onMouseMove);
-      document.body.removeEventListener("mouseup", onMouseUp);
-    }
-
-    function onMouseMove(event) {
-      const clientX = event.clientX;
-      const clientY = event.clientY;
-
-      const element = clientX - rectX;
-
-      setRectPosition({ ...rectPosition, position: element });
-      getDirection(clientX, clientY);
-    }
+  function mouseUp() {
+    setPosition({ ...position, isListener: false, pointMove: pointRef.current });
   }
 
-  function postTouchStart(event) {
-    const touch = event.touches[0];
-    const rect = event.target.getBoundingClientRect();
+  function mouseDown(eventDown) {
+    const point = eventDown.clientX;
 
-    const clientX = touch.clientX;
-    const clientY = touch.clientY;
-
-    const rectX = clientX - rect.x;
-
-    setCordinateDirection({ ...cordinateDirection, x: clientX, y: clientY });
-    setRectPosition({ ...rectPosition, rect: rectX });
+    setPosition(prev => ({ ...prev, pointSave: point, isListener: true }));
   }
 
-  function postTouchMove(event) {
-    const touch = event.touches[0];
+  useEffect(() => {
+    if (position.isListener === false) return;
 
-    const clientX = touch.clientX;
-    const clientY = touch.clientY;
+    document.addEventListener("mousemove", mouseMoveThrottle);
+    document.addEventListener("mouseup", mouseUp);
 
-    const element = clientX - rectPosition.rect;
+    return () => {
+      document.removeEventListener("mousemove", mouseMoveThrottle);
+      document.removeEventListener("mouseup", mouseUp);
+    };
+  }, [position.isListener]);
 
-    setRectPosition({ ...rectPosition, position: element });
-    getDirection(clientX, clientY);
-  }
-
-  const { position } = rectPosition;
-
-  const mouseStart = useDebounce(postMouseStart, 5);
-  const touchMove = useDebounce(postTouchMove, 5);
   return (
     <>
-      <Item.Item
-        style={{ transform: `translateX(${position}px)` }}
-        onMouseDown={mouseStart}
-        onTouchMove={touchMove}
-        onTouchStart={postTouchStart}
-      >
+      <Item.Item style={{ transform: `translateX(${position.pointMove}px)` }} onMouseDown={mouseDown} ref={moveItemRef}>
         <Avatar />
         <Article {...props} />
       </Item.Item>
@@ -102,6 +60,7 @@ const Item = ({ ...props }) => {
 };
 
 Item.Item = styled.div`
+  user-select: none;
   position: relative;
   display: flex;
   align-items: center;
